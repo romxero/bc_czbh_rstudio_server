@@ -55,6 +55,8 @@ sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
 EOL
 )
 
+
+
 chmod 700 "${RSESSION_WRAPPER_FILE}"
 
 export RSTUDIO_SERVER_IMAGE="/hpc/mydata/randall.white/rstudio_apptainer_build/rstudio_apptainer/this.sif"
@@ -92,6 +94,7 @@ echo "Starting up rserver..."
 
 apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-server \
   --bind ${MY_TMP_DIR}/var/run/rstudio-server:/var/run/rstudio-server \
+  ${RSTUDIO_SERVER_IMAGE} \
   --auth-timeout-minutes 0 \
   --server-daemonize 0 \
   --auth-encrypt-password 0 \
