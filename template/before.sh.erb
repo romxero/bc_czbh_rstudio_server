@@ -1,22 +1,11 @@
-# rstudio 1.4+ needs a csrf token
-csrf_token=<%= SecureRandom.uuid %>
+<%-
+  require 'securerandom'
+  csrftoken = SecureRandom.uuid
+-%>
+export csrf_token="<%= csrftoken %>"
+
 
 # Export the module function if it exists
-<% if context.cluster =~ /kubernetes/ -%>
-exec &> >(tee -a "pod.log")
-
-source /etc/profile.d/lmod.sh
-
-source /bin/find_host_port
-source /bin/save_passwd_as_secret
-password="$PASSWORD"
-host="$HOST_CFG"
-port="$PORT_CFG"
-export SINGULARITY_HOME="$HOME"
-
-/bin/bash /opt/open_ondemand/helpers/k8_helper csrf_token "$csrf_token"
-
-<% else -%>
 [[ $(type -t module) == "function" ]] && export -f module
 
 # Find available port to run server on
@@ -24,7 +13,4 @@ port=$(find_port ${host})
 
 # Define a password and export it for RStudio authentication
 password="$(create_passwd 16)"
-
-<% end -%>
-
 export RSTUDIO_PASSWORD="${password}"
