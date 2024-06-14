@@ -1,5 +1,5 @@
 ---
-title: "CZBH RStudio Server"
+title: "RStudio Server"
 description: Starts an RStudio server on the requested resources.
 cluster: "bruno"
 
@@ -7,7 +7,7 @@ attributes:
   auto_modules_r:
     default: false
 
-  mod_extra:
+  mod_extra: 
     label: "Additional modules"
     widget: "text_field"
     value: ''
@@ -18,7 +18,7 @@ attributes:
     data-filepicker: true
     data-show-hidden: true
     data-target-file-type: dirs  # Valid values are: files, dirs, or both
-    data-default-directory: '$HOME'
+    data-default-directory: '$HOME' 
     readonly: false
     value: '$HOME'
 
@@ -55,3 +55,4 @@ form:
   - rs_memory_cpu
   - slurm_gpu_type
   - slurm_gpu_count
+
