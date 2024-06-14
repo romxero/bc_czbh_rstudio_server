@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #
-# Load modules
 #
 set -x
 
@@ -60,7 +59,7 @@ EOL
 chmod 700 "${RSESSION_WRAPPER_FILE}"
 
 export RSTUDIO_SERVER_IMAGE="/hpc/mydata/randall.white/rstudio_apptainer_build/rstudio_apptainer/this.sif"
-export SINGULARITY_BINDPATH="/etc,/media,/mnt,/opt,/srv,/usr,/var,/hpc"
+export APPTAINER_BINDPATH="/etc,/media,/mnt,/opt,/srv,/usr,/var,/hpc"
 export PATH="$PATH:/usr/lib/rstudio-server/bin"
 
 
@@ -95,6 +94,7 @@ echo "Starting up rserver..."
 apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-server \
   --bind ${MY_TMP_DIR}/var/run/rstudio-server:/var/run/rstudio-server \
   ${RSTUDIO_SERVER_IMAGE} \
+  /usr/lib/rstudio-server/bin/rserver \
   --auth-timeout-minutes 0 \
   --server-daemonize 0 \
   --auth-encrypt-password 0 \
@@ -108,15 +108,5 @@ apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-serv
   --server-working-dir ${RSTUDIO_SERVER_WORKING_DIR} \
   --www-port ${port} &
 
-
-#  apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-server \
-#  --bind ${MY_TMP_DIR}/var/run/rstudio-server:/var/run/rstudio-server \
-#  --home /home/oodadmin:/home/oodadmin \
-#  ${RSTUDIO_SERVER_IMAGE} \
-#  /usr/lib/rstudio-server/bin/rserver \
-#  --auth-none 1 \
-#  --www-port=${port} \
-#  --secure-cookie-key-file=/var/run/rstudio-server/secure-cookie-key \
-#  --database-config-file=/var/lib/rstudio-server/rstudio-os.sqlite &
 
 sleep 5
