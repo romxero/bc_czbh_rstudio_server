@@ -107,7 +107,7 @@ apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-serv
   --server-data-dir ${RSTUDIO_SERVER_DATA_DIR} \
   --server-user ${USER} \
   --server-working-dir ${RSTUDIO_SERVER_WORKING_DIR} \
-  --www-port 65232 &
+  --www-port ${port} &
 
 
 sleep 5
