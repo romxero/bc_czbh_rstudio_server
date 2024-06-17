@@ -22,6 +22,7 @@ echo "Module load completed."
 
 # Set up a temporary directory for RStudio Server
 export MY_TMP_DIR=$(mktemp -d -t rstudio_${USER}_server-XXXX)
+# make directory with temporary file
 mkdir -p ${MY_TMP_DIR}/var/lib/rstudio-server
 mkdir -p ${MY_TMP_DIR}/var/run/rstudio-server
 
@@ -98,7 +99,7 @@ apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-serv
   --auth-timeout-minutes 0 \
   --server-daemonize 0 \
   --auth-encrypt-password 0 \
-  --auth-none 0 \
+  --auth-none 1 \
   --auth-pam-helper-path "${RSTUDIO_AUTH}" \
   --database-config-file /var/lib/rstudio-server/rstudio-os.sqlite \
   --rsession-path "${RSESSION_WRAPPER_FILE}" \
@@ -106,7 +107,7 @@ apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-serv
   --server-data-dir ${RSTUDIO_SERVER_DATA_DIR} \
   --server-user ${USER} \
   --server-working-dir ${RSTUDIO_SERVER_WORKING_DIR} \
-  --www-port ${port} &
+  --www-port 65232 &
 
 
 sleep 5
