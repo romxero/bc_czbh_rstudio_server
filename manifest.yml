@@ -1,9 +1,10 @@
 ---
-name: RStudio Server
+name: RStudio Server: Alpha Version
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
+  Please note: This is an alpha version for testing the latest version of Rstudio. -RC
   Launch [RStudio Server](https://www.rstudio.com/products/rstudio-server/) 
   an IDE for [R](https://www.r-project.org/)
 

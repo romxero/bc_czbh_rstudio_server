@@ -22,9 +22,14 @@ echo "Module load completed."
 
 # Set up a temporary directory for RStudio Server
 export MY_TMP_DIR=$(mktemp -d -t rstudio_${USER}_server-XXXX)
-# make directory with temporary file
+
+# make sub-directories within the temp directory 
 mkdir -p ${MY_TMP_DIR}/var/lib/rstudio-server
 mkdir -p ${MY_TMP_DIR}/var/run/rstudio-server
+export MY_HELP_DIR=${MY_TMP_DIR}/helper_scripts
+
+#one trick pony for helper script directory 
+mkdir -p ${MY_HELP_DIR}
 
 # working directories for RStudio Server
 export RSTUDIO_SERVER_WORKING_DIR=${MY_TMP_DIR}/rserver-${SLURM_JOB_ID}.working
@@ -38,7 +43,7 @@ mkdir -p ${RSTUDIO_SERVER_DATA_DIR}
 export RSTUDIO_AUTH="${PWD}/bin/auth"
 
 # Generate an `rsession` wrapper script
-export RSESSION_WRAPPER_FILE="${PWD}/rsession.sh"
+export RSESSION_WRAPPER_FILE="${MY_HELP_DIR}/rsession.sh"
 (
 umask 077
 sed 's/^ \{2\}//' > "${RSESSION_WRAPPER_FILE}" << EOL
@@ -94,6 +99,8 @@ echo "Starting up rserver..."
 
 apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-server \
   --bind ${MY_TMP_DIR}/var/run/rstudio-server:/var/run/rstudio-server \
+  --bind ${MY_TMP_DIR}/helper_scripts:/opt/helper_scripts \
+  --bind ${MY_TMP_DIR}:${MY_TMP_DIR} \
   ${RSTUDIO_SERVER_IMAGE} \
   /usr/lib/rstudio-server/bin/rserver \
   --auth-timeout-minutes 0 \
@@ -109,5 +116,5 @@ apptainer exec --bind ${MY_TMP_DIR}/var/lib/rstudio-server:/var/lib/rstudio-serv
   --server-working-dir ${RSTUDIO_SERVER_WORKING_DIR} \
   --www-port ${port} &
 
-
+# we need some:
 sleep 5
